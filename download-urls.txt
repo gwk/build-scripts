@@ -1,0 +1,2 @@
+# bash completion
+http://bash-completion.alioth.debian.org/files/bash-completion-2.0.tar.bz2
