@@ -5,10 +5,10 @@
 
 set -ex
 
-./Configure darwin64-x86_64-cc "$@"
+../Configure "$@"
 
 make clean
-make # -j8 fails for openssl-1.0.2a; osx 10.10.4 tools (gnu make 3.81).
+make -j8
 
 set +x
 echo
