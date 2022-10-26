@@ -1,4 +1,5 @@
-# Copyright 2011 George King. Permission to use this file is granted in license-gloss.txt.
+#!/bin/sh
+# Dedicated to the public domain under CC0: https://creativecommons.org/publicdomain/zero/1.0/.
 
 # build python (2.7 or 3.3) using clang.
 # --enable-framework is required by some modules, particularly matplotlib.

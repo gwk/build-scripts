@@ -1,7 +1,7 @@
-# Copyright 2015 George King. Permission to use this file is granted in license-gloss.txt.
+#!/bin/sh
+# Dedicated to the public domain under CC0: https://creativecommons.org/publicdomain/zero/1.0/.
 
 set -ex
-
 
 # unlike many build scripts, we are obliged to run configure from the root dir;
 # otherwise, recursive make in lib/py fails.
@@ -15,4 +15,3 @@ make -j8
 set +x
 echo
 echo 'build complete; run make install.'
-

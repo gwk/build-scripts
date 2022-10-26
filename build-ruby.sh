@@ -1,4 +1,5 @@
-# Copyright 2014 George King. Permission to use this file is granted in license-gloss.txt.
+#!/bin/sh
+# Dedicated to the public domain under CC0: https://creativecommons.org/publicdomain/zero/1.0/.
 
 # build ruby using clang.
 # requires that openssl was built from source using build-openssl.sh.
