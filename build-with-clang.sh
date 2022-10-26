@@ -10,7 +10,7 @@ CC=clang CXX=clang++ \
 "$@"
 
 make clean
-make -j6
+make -j8
 
 set +x
 echo
