@@ -9,7 +9,7 @@ error() { echo 'error:' "$@" 1>&2; exit 1; }
 
 mkdir -p _build
 
-for version in 3.{8,9,10}; do
+for version in 3.{9,10,11}; do
   echo
   echo "VERSION: $version"
   git checkout $version
