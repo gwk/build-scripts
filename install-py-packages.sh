@@ -36,6 +36,7 @@ pkgs=(
   types-docutils
   types-lxml
   types-Pillow
+  types-Pygments
   types-pytz
   types-PyYAML
   typing_extensions
