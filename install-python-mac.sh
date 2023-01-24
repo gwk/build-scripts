@@ -50,8 +50,11 @@ sudo mkdir -p /usr/local/py/Python.framework/Versions/$VERSION/man
 exe sudo chown -R :admin /usr/local/py/Python.framework/Versions/$VERSION
 
 # Give the admin sufficient write privileges.
+# Also take the opportunity to create some directories that certain packages want to write to.
 for subdir in bin lib/python$VERSION/site-packages man share/doc; do
-  exe sudo chmod -R g+w /usr/local/py/Python.framework/Versions/$VERSION/$subdir
+  d="/usr/local/py/Python.framework/Versions/$VERSION/$subdir"
+  exe sudo mkdir -p "$d"
+  exe sudo chmod -R g+w "$d"
 done
 
 exe python3 -m pip install --upgrade pip # Upgrade pip immediately; this will create the pip executables in $VERSION/bin.
