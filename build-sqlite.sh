@@ -11,7 +11,7 @@ set -ex
 #LDFLAGS: -L/opt/homebrew/opt/icu4c/lib
 
 cflags=(
-  -DSQLITE_DEFAULT_MEMSTATUS=0
+  -DSQLITE_DEFAULT_MEMSTATUS=0 # Disable memory tracking interfaces to speed up sqlite3_malloc().
   -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1
   -DSQLITE_DQS=0
   -DSQLITE_ENABLE_DBSTAT_VTAB
