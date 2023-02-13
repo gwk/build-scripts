@@ -26,7 +26,7 @@ for p in "$patch_dir/"*; do
   # apply patch across same level of directory nesting
   patch -p0 <"$p" || error 'patch failed'
   p_applied="$patch_applied_dir/$(basename "$p")"
-  mv "$p" "$p_applied" || fail "move applied patch: $p -> $p_applied"
+  mv "$p" "$p_applied" || error "move applied patch: $p -> $p_applied"
   echo
 done
 
