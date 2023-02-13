@@ -13,7 +13,7 @@ set -ex
 cflags=(
   -DSQLITE_DEFAULT_MEMSTATUS=0 # Disable memory tracking interfaces to speed up sqlite3_malloc().
   -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 # WAL mode defaults to PRAGMA synchronous=NORMAL instead of FULL. Faster and still safe.
-  -DSQLITE_DQS=0: # Disables double-quoted string literals, which breaks sloppy 3rd party tools.
+  #-DSQLITE_DQS=0: # Disables double-quoted string literals, which breaks sloppy 3rd party tools.
   -DSQLITE_ENABLE_DBSTAT_VTAB
   -DSQLITE_ENABLE_EXPLAIN_COMMENTS
   -DSQLITE_ENABLE_FTS5
