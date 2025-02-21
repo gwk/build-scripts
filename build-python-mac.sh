@@ -24,7 +24,7 @@ prefix=/usr/local/py
 
 # If MACOSX_DEPLOYMENT_TARGET is not specified, then the setup.py readline hack fails and libedit does not get built.
 # We no longer rely on libedit because it fails display the 0xff UTF8 character properly.
-export MACOSX_DEPLOYMENT_TARGET=10.9
+export MACOSX_DEPLOYMENT_TARGET=15.1
 
 cc_no_warning_flags='-Wno-unreachable-code -Wno-deprecated-declarations' # These drift over time.
 
