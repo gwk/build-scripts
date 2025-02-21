@@ -18,7 +18,7 @@ set -e
 
 error() { echo 'error:' "$@" 1>&2; exit 1; }
 
-#version=$1; shift || error '$0: requires python version as first argument.'
+[[ "$(basename $PWD)" == "_build" ]] || error "must be run from _build directory"
 
 prefix=/usr/local/py
 
