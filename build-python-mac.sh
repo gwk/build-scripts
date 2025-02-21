@@ -5,8 +5,8 @@
 
 # Complete steps to build on mac successfully:
 # * build-sqlite.sh with latest sqlite3.
-# * brew install openssl.
-# * brew install ca-certificates, ncurses, pkg-config, readline, xz.
+# * `brew install openssl ca-certificates ncurses pkg-config readline xz`
+# * `brew upgrade`
 # * Run this script.
 # * Run install-python-mac.sh.
 
