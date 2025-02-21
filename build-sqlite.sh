@@ -27,6 +27,7 @@ cflags=(
   -DSQLITE_OMIT_AUTOINIT # Helps many API calls run a little faster.
   -DSQLITE_OMIT_DEPRECATED
   #-DSQLITE_OMIT_SHARED_CACHE # Shared cache is a deprecated feature, but the Python sqlite3 links to it.
+  -DSQLITE_STRICT_SUBTYPE=1
   -DSQLITE_THREADSAFE=1 # Default "serialized" mode. Safe for use in multithreaded environment.
   -I/opt/homebrew/opt/readline/include
   -Os
