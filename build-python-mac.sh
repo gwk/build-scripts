@@ -50,14 +50,18 @@ echo "PKG_CONFIG_PATH: $PKG_CONFIG_PATH"
 
 echo "running configure..."
 ../configure \
---cache-file=config.cache \
-CC=clang CXX=clang++ \
---prefix=$prefix \
---enable-framework=$prefix \
---enable-optimizations \
---enable-loadable-sqlite-extensions \
--with-openssl=$(brew --prefix openssl@3) \
-"$@"
+ CC=clang CXX=clang++ \
+ --cache-file=config.cache \
+ --prefix=$prefix \
+ --enable-framework=$prefix \
+ --enable-loadable-sqlite-extensions \
+ --with-openssl=$(brew --prefix openssl@3) \
+ --enable-optimizations \
+ --with-computed-gotos \
+ "$@"
+
+# Note: we explicitly specify with-computed-gotos so that if the compiler does not support them, the build will fail.
+# Doing so also makes it more obvious from sysconfig results that computed gotos are enabled.
 
 echo "configure done."
 
