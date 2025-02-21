@@ -28,8 +28,8 @@ export MACOSX_DEPLOYMENT_TARGET=15.1
 
 cc_no_warning_flags='-Wno-unreachable-code -Wno-deprecated-declarations' # These drift over time.
 
-export CFLAGS="$cc_no_warning_flags -I/usr/local"
-export LDFLAGS="-L/usr/local/lib"
+export CFLAGS="$cc_no_warning_flags -I/usr/local/include"
+export LDFLAGS='-L/usr/local/lib'
 
 # pkg-config paths provided by homebrew via pkgconfig.
 # Note that we could specify openssl here but instead use the --with-openssl argument to configure.
