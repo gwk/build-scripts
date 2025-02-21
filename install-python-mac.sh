@@ -13,14 +13,19 @@ echo "VERSION: $VERSION"
 set -e
 exe sudo mkdir -p /usr/local/py
 exe sudo chown :admin /usr/local/py
-exe sudo chmod g+w /usr/local/py
+exe sudo chmod g+rwx /usr/local/py
 
-exe sudo make altinstall
-#^ This runs the ensurepip step at the end, and will issue a warning about running pip as root.
-#^ We fix this up with the permissions changes below.
+exe sudo rm -rf "/Applications/Python $VERSION"
+#^ The Application is built and installed by the altinstall step which we do not give sudo privileges.
+#^ Therefore we need to remove it first.
 
-exe sudo rm -rf /usr/local/py/bin # This directory is just symlinks; the bin/ inside of the version folder is what matters.
+exe make altinstall
+#^ This runs the ensurepip step at the end and would complain if it is run as root.
+#^ Furthermore it compiles products into the build dir which are less easily removed if owned by root.
 
+exe rm -rf /usr/local/py/bin # This directory is just symlinks; the bin/ inside of the version folder is what matters.
+
+# Remove the symlinks that the installer just created in /usr/local/bin.
 for bin in /usr/local/bin/{2to3,idle3,pip,pip3,pydoc,pydoc3,python,python3}; do
   exe sudo rm -f "$bin"
 done
@@ -41,20 +46,15 @@ for name in pip pip3; do
   exe sudo ln -s /usr/local/py/Python.framework/Versions/$VERSION/bin/pip$VERSION /usr/local/bin/$name
 done
 
-# Prior to ownership changes, create a man dir. This is to accommodate pyperclip.
-sudo mkdir -p /usr/local/py/Python.framework/Versions/$VERSION/man
-#^ TODO: not sure if this is necessary.
-
-# Change permissions to allowspip installs without sudo.
+# Change permissions to allow pip installs without sudo.
 # Make the entire python installation's owner group admin.
-exe sudo chown -R :admin /usr/local/py/Python.framework/Versions/$VERSION
+sudo chown -R :admin /usr/local/py/Python.framework/Versions/$VERSION
 
-# Give the admin sufficient write privileges.
 # Also take the opportunity to create some directories that certain packages want to write to.
 for subdir in bin lib/python$VERSION/site-packages man share/doc; do
   d="/usr/local/py/Python.framework/Versions/$VERSION/$subdir"
-  exe sudo mkdir -p "$d"
-  exe sudo chmod -R g+w "$d"
+  exe mkdir -p "$d"
+  exe chmod -R g+rwx "$d"
 done
 
 exe python3 -m pip install --upgrade pip # Upgrade pip immediately; this will create the pip executables in $VERSION/bin.
@@ -66,5 +66,5 @@ echo
 if echo "$PATH" | grep ":$py_bin:"; then
   echo "PATH contains '$py_bin'."
 else
-  echo "PATH does not appear to contain '$py_bin'."
+  echo "PATH does not contain '$py_bin'."
 fi
