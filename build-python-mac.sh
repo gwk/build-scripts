@@ -26,7 +26,7 @@ prefix=/usr/local/py
 # We no longer rely on libedit because it fails display the 0xff UTF8 character properly.
 export MACOSX_DEPLOYMENT_TARGET=15.1
 
-cc_no_warning_flags='-Wno-unreachable-code -Wno-deprecated-declarations' # These drift over time.
+cc_no_warning_flags='-Wstrict-prototypes -Wno-deprecated-declarations -Wno-unreachable-code' # These drift over time.
 
 export CFLAGS="$cc_no_warning_flags -I/usr/local/include"
 export LDFLAGS='-L/usr/local/lib'
@@ -65,7 +65,7 @@ echo "running configure..."
 
 echo "configure done."
 
-make -j8
+make -j$(sysctl -n hw.logicalcpu)
 echo
 echo "make done."
 echo 'run build-scripts/install-python-mac.sh to install.'
