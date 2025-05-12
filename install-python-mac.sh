@@ -37,7 +37,6 @@ done
 # Note: we link `python` to the underlying mac binary that gets executed, so that lldb can debug it.
 # This is an unusual trick and the ramifications are not fully understood.
 # It appears that the normal `python` executable is a large binary that execs the underlying Python.app binary.
-# I don't know why this is how macOS python is built by default.
 for name in python python3; do
   exe sudo ln -s /usr/local/py/Python.framework/Versions/$VERSION/Resources/Python.app/Contents/MacOS/Python /usr/local/bin/$name
 done
@@ -68,3 +67,11 @@ if echo "$PATH" | grep ":$py_bin:"; then
 else
   echo "PATH does not contain '$py_bin'."
 fi
+
+set -x
+python3 -c 'import dbm.gnu' # gdbm.
+python3 -c 'import lzma' # xz.
+python3 -c 'import readline; print("Readline backend:", readline.backend)'
+python3 -c 'import ssl; print("SSL version:", ssl.OPENSSL_VERSION)'
+python3 -c 'import sqlite3; print("SQLite version:", sqlite3.sqlite_version)'
+python3 -c 'import tkinter; print("Tkinter version:", tkinter.TkVersion)'

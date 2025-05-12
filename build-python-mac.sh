@@ -26,22 +26,37 @@ prefix=/usr/local/py
 # We no longer rely on libedit because it fails display the 0xff UTF8 character properly.
 export MACOSX_DEPLOYMENT_TARGET=15.1
 
-cc_no_warning_flags='-Wstrict-prototypes -Wno-deprecated-declarations -Wno-unreachable-code' # These drift over time.
+brew_path() {
+  local pgk_name="$1"
+  shift
+  brew_prefix="$(brew --prefix "$pgk_name")"
+  [[ $? -eq 0 ]] || error "brew --prefix $pgk_name failed."
+  echo "$brew_prefix"/"$@"
+}
 
-export CFLAGS="$cc_no_warning_flags -I/usr/local/include"
-export LDFLAGS='-L/usr/local/lib'
+CFLAGS=''
+LDFLAGS=''
+
+CFLAGS+=' -Wstrict-prototypes -Wno-deprecated-declarations -Wno-unreachable-code' # Warning flags. These drift over time.
+
+CFLAGS+=' -I/usr/local/include' # For locally built sqlite.
+LDFLAGS+=' -L/usr/local/lib' # For locally built sqlite.
+
+CFLAGS+=" -I$(brew_path 'gdbm' 'include')"
+LDFLAGS+=" -L$(brew_path 'gdbm' 'lib')"
+
+CFLAGS+=" -I$(brew_path 'tcl-tk' 'include/tcl-tk')" # For tkinter.
+LDFLAGS+=" -L$(brew_path 'tcl-tk' 'lib')" # For tkinter.
 
 # pkg-config paths provided by homebrew via pkgconfig.
 # Note that we could specify openssl here but instead use the --with-openssl argument to configure.
-pre=/opt/homebrew/opt
-suf=lib/pkgconfig
-brew_pc_deps=(
-  $pre/readline/$suf
-  $pre/xz/$suf
-)
-_pc_spaced="${brew_pc_deps[@]}"
-export PKG_CONFIG_PATH="${_pc_spaced/ /:}"
+PKG_CONFIG_PATH="\
+$(brew_path readline 'lib/pkgconfig'):\
+$(brew_path xz 'lib/pkgconfig')"
 
+export CFLAGS
+export LDFLAGS
+export PKG_CONFIG_PATH
 
 echo "MACOSX_DEPLOYMENT_TARGET: $MACOSX_DEPLOYMENT_TARGET"
 echo "CFLAGS: $CFLAGS"
