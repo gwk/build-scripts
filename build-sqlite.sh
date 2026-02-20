@@ -3,10 +3,17 @@
 
 # Build sqlite with various extensions enabled.
 
-set -ex
+set -euo pipefail
+
+
+# Note: as of 3.51.2, the sqlite configure script seems to have broken the ability to build in a subdirectory.
+# I think this worked up to 3.50.2 at least. The error manifests as missing `make install` step.
+[[ "$(basename $PWD)" =~ sqlite-.* ]] || error "Script must be run from sqlite source directory."
+
+set -x
 
 # SQLite transitioned to the "autosetup" build system in 3.49. This is an obscure, Tcl-based system that they bundle.
-# Use `../configure --help` to see the available options.
+# Use `./configure --help` to see the available options.
 
 configure_flags=(
   --all
@@ -15,6 +22,7 @@ configure_flags=(
 )
 
 cflags=(
+  -O3
   -DSQLITE_DEFAULT_MEMSTATUS=0 # Disable memory tracking interfaces to speed up sqlite3_malloc().
   -DSQLITE_DEFAULT_WAL_SYNCHRONOUS=1 # WAL mode defaults to PRAGMA synchronous=NORMAL instead of FULL. Faster and still safe.
   #-DSQLITE_DQS=0 # Disables double-quoted string literals, which breaks sloppy 3rd party tools.
@@ -32,8 +40,8 @@ cflags=(
 
 
 export CFLAGS="${cflags[@]}"
-export LDFLAGS="${ldflags[@]}"
-../configure CC=clang CXX=clang++ "${configure_flags[@]}"
+
+./configure CC=clang CXX=clang++ "${configure_flags[@]}"
 
 make clean
 make
