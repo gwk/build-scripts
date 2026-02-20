@@ -5,7 +5,7 @@
 
 # Complete steps to build on mac successfully:
 # * build-sqlite.sh with latest sqlite3.
-# * `brew install openssl ca-certificates ncurses pkg-config readline xz`
+# * `brew install ca-certificates gdbm ncurses openssl pkg-config readline tcl-tk xz`
 # * `brew upgrade`
 # * Run this script.
 # * Run install-python-mac.sh.
@@ -14,11 +14,17 @@
 # --with-pydebug
 # --disable-optimizations
 
-set -e
+set -euo pipefail
 
 error() { echo 'error:' "$@" 1>&2; exit 1; }
 
-[[ "$(basename $PWD)" == "_build" ]] || error "must be run from _build directory"
+if [[ "$(basename $PWD)" =~ Python-.* ]]; then
+  echo "Note: in Python source directory; creating _build directory and changing to it."
+  mkdir -p _build
+  cd _build
+fi
+
+[[ "$(basename $PWD)" == _build ]] || error "Script must be run from _build directory."
 
 prefix=/usr/local/py
 
@@ -72,7 +78,9 @@ echo "running configure..."
  --enable-loadable-sqlite-extensions \
  --with-openssl=$(brew --prefix openssl@3) \
  --enable-optimizations \
+ --with-lto \
  --with-computed-gotos \
+ --with-sqlite \
  "$@"
 
 # Note: we explicitly specify with-computed-gotos so that if the compiler does not support them, the build will fail.

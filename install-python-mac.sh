@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
 # Dedicated to the public domain under CC0: https://creativecommons.org/publicdomain/zero/1.0/.
 
+set -euo pipefail
+
 fail() { echo 'error:' "$@" 1>&2; exit 1; }
 
 exe() { echo "$@"; "$@"; }
+
+
+if [[ "$(basename $PWD)" =~ Python-.* ]]; then
+  echo "Note: in Python source directory; cd'ing into _build directory."
+  cd _build
+fi
+
+[[ "$(basename $PWD)" == _build ]] || error "Script must be run from _build directory."
 
 
 VERSION=$(ls Python.framework/Versions | grep -E '3\.[0-9]+')
 echo "VERSION: $VERSION"
 [[ -n "$VERSION" ]] || fail 'could not detect python version.'
 
-set -e
 exe sudo mkdir -p /usr/local/py
 exe sudo chown :admin /usr/local/py
 exe sudo chmod g+rwx /usr/local/py
